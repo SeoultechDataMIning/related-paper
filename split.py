@@ -24,13 +24,13 @@ def split_xy(raw_data):
     trnX = []
     trnY = []
     for i in range(row):
-        # y만들기
+        #make y
         tmp_label = raw_data['label'][i][:]
         if tmp_label == '__label__2':
             trnY.append(1)
         elif tmp_label == '__label__1':
             trnY.append(0)
-        # x만들기
+        #make y
         corpus = raw_data['review'][i][:]
         norm_corpus = prep.normalizer(corpus)
         trnX.append(norm_corpus)

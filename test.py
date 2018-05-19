@@ -1,5 +1,4 @@
 import split as spt
-import preprocessing as prep
 
 import os
 import pandas as pd
@@ -13,6 +12,8 @@ if os.path.isfile("./data/train.ft.csv") == False:
 #csv index:  label     review
 train = pd.read_csv('./data/train.ft.csv', header=0)
 test = pd.read_csv('./data/test.ft.csv', header=0)
+
+# excute preprocessing in split_xy()
 trn_data = spt.split_xy(train)
 test_data = spt.split_xy(test)
 # split x, y
@@ -24,7 +25,7 @@ testX, y_test = test_data
 # bag of word
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.pipeline import Pipeline
- # 시간이 된다면 min_df를 5정도로 더크게 바꿔서도 해보면 좋을듯
+ # it might be better to try with min_df=5 ,if we have enough time.
 vect = CountVectorizer(min_df=2).fit(trnX)
 X_train = vect.transform(trnX)
 X_test = vect.transform(testX)

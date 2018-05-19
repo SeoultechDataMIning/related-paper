@@ -1,6 +1,7 @@
 import nltk
-''' remove special symbols & to lower case'''
 import re
+
+# remove special symbols & to lower case
 def remove_special_symbol(string):
     letters = re.sub('[^a-zA-Z]', ' ', string)
     return letters
@@ -12,20 +13,20 @@ def remove_spesym_tolower(string):
     lower_string = letters.lower()
     return lower_string
 
-'''tokenize string: 토큰화'''
+#tokenize string: 토큰화
 from nltk.tokenize import TweetTokenizer
 def tokenize_corpus(string):
     tknizer = TweetTokenizer()
     tokens = tknizer.tokenize(string)
     return tokens
 
-'''remove stopwords: 불용어'''
+#remove stopwords: 불용어'''
 from nltk.corpus import stopwords
 def remove_stopwords(tokens):
     words = [w for w in tokens if not w in stopwords.words('english')]
     return words
 
-'''stemming tokens: 어간추출'''
+#stemming tokens: 어간추출
 from nltk.stem.porter import PorterStemmer
 from nltk.stem.lancaster import LancasterStemmer
 from nltk.stem.snowball import SnowballStemmer
@@ -41,7 +42,7 @@ def snowball_stemmer(tokens):
     snowball = nltk.SnowballStemmer()
     words = [snowball.stem(t) for t in tokens]
     return words
-'''lemmatization: 음소표기법'''
+#lemmatization: 음소표기법
 from nltk.stem import WordNetLemmatizer
 def lemmatize_tokens(tokens):
     lemmatizer = WordNetLemmatizer()
