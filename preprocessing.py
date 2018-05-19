@@ -61,6 +61,6 @@ def normalizer(corpus):
 
     #4. stemming..  choose stemmer among Porter, lancaster, snowball and lemmatizer
     tokens = porter_stemmer(tokens)
-
     return ( ' '.join(tokens))
+
 

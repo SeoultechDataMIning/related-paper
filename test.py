@@ -12,25 +12,28 @@ if os.path.isfile("./data/train.ft.csv") == False:
 
 #csv index:  label     review
 train = pd.read_csv('./data/train.ft.csv', header=0)
+test = pd.read_csv('./data/test.ft.csv', header=0)
+trn_data = spt.split_xy(train)
+test_data = spt.split_xy(test)
+# split x, y
+trnX, y_train = trn_data
+testX, y_test = test_data
 
-row, col = train.shape
-trnX = []
-trnY = []
-for i in range(row):
-    # y만들기
-    tmp_label = train['label'][i][:]
-    if tmp_label == '__label__2':
-        trnY.append(2)
-    elif tmp_label == '__label__1':
-        trnY.append(1)
-    # x만들기
-    corpus = train['review'][i][:]
-    norm_corpus = prep.normalizer(corpus)
-    trnX.append(norm_corpus)
-    if i % 5000 == 0:
-        print("{}번째 전처리".format(i))
 
-print(trnX)
-print(trnY)
+
+# bag of word
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.pipeline import Pipeline
+ # 시간이 된다면 min_df를 5정도로 더크게 바꿔서도 해보면 좋을듯
+vect = CountVectorizer(min_df=2).fit(trnX)
+X_train = vect.transform(trnX)
+X_test = vect.transform(testX)
+
+'''
+ X_train: train 데이터의 bag of word
+ X_test: test 데이터의 bag of word
+ y_train: train 데이터의 class
+ y_test: test 데이터의 class
+'''
 
 
