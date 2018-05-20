@@ -24,7 +24,6 @@ testX, y_test = test_data
 
 # bag of word
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.pipeline import Pipeline
  # it might be better to try with min_df=5 ,if we have enough time.
 vect = CountVectorizer(min_df=2).fit(trnX)
 X_train = vect.transform(trnX)
@@ -36,5 +35,4 @@ X_test = vect.transform(testX)
  y_train: train 데이터의 class
  y_test: test 데이터의 class
 '''
-
 
