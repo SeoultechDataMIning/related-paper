@@ -19,7 +19,7 @@ def make_csv(filename):
 
 
 import preprocessing as prep
-def split_xy(raw_data):
+def split_normalized_xy(raw_data):
     row, col = raw_data.shape
     trnX = []
     trnY = []
@@ -37,5 +37,20 @@ def split_xy(raw_data):
         if i % 5000 == 0:
             print("{}번째 전처리".format(i))
 
+    print('전처리 완료')
+    return (trnX, trnY)
+
+def split_xy(raw_data):
+    row, col = raw_data.shape
+    trnX = []
+    trnY = []
+    for i in range(row):
+        #make y
+        tmp_label = raw_data['label'][i]
+        trnY.append(tmp_label)
+
+        #make X
+        corpus = raw_data['review'][i][:]
+        trnX.append(corpus)
     return (trnX, trnY)
 

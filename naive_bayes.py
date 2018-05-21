@@ -14,8 +14,8 @@ train = pd.read_csv('./data/train.ft.csv', header=0)
 test = pd.read_csv('./data/test.ft.csv', header=0)
 
 # excute preprocessing in split_xy()
-trn_data = spt.split_xy(train)
-test_data = spt.split_xy(test)
+trn_data = spt.split_normalized_xy(train)
+test_data = spt.split_normalized_xy(test)
 # split x, y
 X_train, y_train = trn_data
 X_test, y_test = test_data
@@ -47,7 +47,11 @@ print("test set score: {}".format(grid.score(X_test, y_test)))
 
 # save model
 import pickle
-output = open('./model_save/naive_bayes.pkl', 'w+b')
+import datetime
+now = datetime.utcnow().strftime("%Y%m%d%H%M")
+filename = './model_save/naive_bayes_' + now + '.pkl'
+
+output = open(filename, 'w+b')
 pickle.dump(grid.best_estimator_, output)
 output.close()
 
