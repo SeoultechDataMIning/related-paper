@@ -3,6 +3,7 @@ import split as spt
 import os
 import pandas as pd
 
+'''
 # txt to csv
 if os.path.isfile("./data/test.ft.csv") == False:
     spt.make_csv("test.ft")
@@ -20,6 +21,7 @@ test_data = spt.split_normalized_xy(test)
 X_train, y_train = trn_data
 X_test, y_test = test_data
 '''
+'''
 train = pd.read_csv('./data/preprocessed_train.csv', header=0)
 test = pd.read_csv('./data/preprocessed_test.csv', header=0)
 
@@ -30,20 +32,37 @@ X_train, y_train = trn_data
 X_test, y_test = test_data
 '''
 
+train = pd.read_csv('data/preprocessed_train.csv', names=['label', 'review'], header=0)
+test = pd.read_csv('data/preprocessed_test.csv', names=['label', 'review'], header=0)
+
+train = train.fillna(' ')
+test = test.fillna(' ')
+
+trn_data = spt.split_xy(train)
+test_data = spt.split_xy(test)
+
+X_train, y_train = trn_data
+X_test, y_test = test_data
+print('data loaded!!')
 
 # bag of word
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.pipeline import Pipeline
+#from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV
 
+'''
 pipe = Pipeline([('vect', CountVectorizer()),
                 ('clf', MultinomialNB())])
+
 param_grid = {'vect__min_df': [1, 2, 3, 4, 5],
         'clf__alpha': [1, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
+'''
+vectorizer = CountVectorizer(min_df=5)
+Xtrain = vectorizer.fit_transform(X_train)
+Xtest = vectorizer.fit_trainsform(X_test)
 
 filename = "./model_save/naive_bayes_"
-import pickle
 import datetime
 now = datetime.datetime.now().strftime("%Y%m%d%H%M")
 filename = './model_save/naive_bayes_' + now
@@ -54,14 +73,14 @@ csvWrite = csv.writer(f)
 csvWrite.writerow(["min_dif", "alpha", "score"])
 
 count = 1
-for min_df in param_grid['vect__min_df']:
-    for alpha in param_grid['clf__alpha']:
-        pipe.fit(X_train, y_train)
-        print(str(count) + "/30 model trained")
-        score = pipe.score(X_test, y_test)
-        print(str(count) + "/30 model tested")
-        csvWrite.writerow([str(min_df), str(alpha), str(score)])
-        count = count + 1
+for alpha in param_grid['clf__alpha']:
+    clf = MultinomialNB(alpha=alpha)
+    clf.fit(Xtrain, y_train)
+    print(str(count) + "/30 model trained")
+    score = clf.score(Xtest, y_test)
+    print(str(count) + "/30 model tested")
+    csvWrite.writerow([str(min_df), str(alpha), str(score)])
+    count = count + 1
 f.close()
         
 
