@@ -57,9 +57,9 @@ from sklearn.metrics import precision_recall_curve
 pipe = Pipeline([('vect', CountVectorizer()),
                 ('clf', MultinomialNB())])
 
+'''
 param_grid = {'vect__min_df': [1, 2, 3, 4, 5],
         'clf__alpha': [1, 0.1, 0.01, 0.001, 0.0001, 0.00001]}
-'''
 vectorizer = CountVectorizer(min_df=5)
 Xtrain = vectorizer.fit_transform(X_train)
 Xtest = vectorizer.fit_trainsform(X_test)
@@ -87,6 +87,7 @@ for alpha in param_grid['clf__alpha']:
     csvWrite.writerow([str(min_df), str(alpha), str(score), 
         str(recall_), str(precision_)])
     count = count + 1
+    '''
     #ROC curve
     precision, recall, thresholds = precision_recall_curve(
             y_test, clf.predict_proba(Xtest))
@@ -98,6 +99,7 @@ for alpha in param_grid['clf__alpha']:
     plt.ylabel("Recall")
     plt.title(alpha)
     plt.show()
+    '''
 f.close()
         
 
