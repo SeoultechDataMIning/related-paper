@@ -50,6 +50,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 #from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV
+from sklearn import metrics
 
 '''
 pipe = Pipeline([('vect', CountVectorizer()),
@@ -70,7 +71,7 @@ filename = './model_save/naive_bayes_' + now
 import csv
 f = open(filename + ".csv", "w")
 csvWrite = csv.writer(f)
-csvWrite.writerow(["min_dif", "alpha", "score"])
+csvWrite.writerow(["min_dif", "alpha", "score", "recall", "precision"])
 
 count = 1
 for alpha in param_grid['clf__alpha']:
@@ -79,7 +80,11 @@ for alpha in param_grid['clf__alpha']:
     print(str(count) + "/30 model trained")
     score = clf.score(Xtest, y_test)
     print(str(count) + "/30 model tested")
-    csvWrite.writerow([str(min_df), str(alpha), str(score)])
+    y_pred = clf.predict(Xtest)
+    recall = metrics.recall_score(y_test, y_pred)
+    precision = metric.precision_score(y_tet, y_pred)
+    csvWrite.writerow([str(min_df), str(alpha), str(score), 
+        str(recall), str(precision)])
     count = count + 1
 f.close()
         
