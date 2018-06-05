@@ -51,6 +51,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV
 from sklearn import metrics
+from sklearn.metrics import precision_recall_curve
 
 '''
 pipe = Pipeline([('vect', CountVectorizer()),
@@ -81,11 +82,22 @@ for alpha in param_grid['clf__alpha']:
     score = clf.score(Xtest, y_test)
     print(str(count) + "/30 model tested")
     y_pred = clf.predict(Xtest)
-    recall = metrics.recall_score(y_test, y_pred)
-    precision = metric.precision_score(y_tet, y_pred)
+    recall_ = metrics.recall_score(y_test, y_pred)
+    precision_ = metric.precision_score(y_test, y_pred)
     csvWrite.writerow([str(min_df), str(alpha), str(score), 
-        str(recall), str(precision)])
+        str(recall_), str(precision_)])
     count = count + 1
+    #ROC curve
+    precision, recall, thresholds = precision_recall_curve(
+            y_test, clf.predict_proba(Xtest))
+    close_zero = np.argmin(np.abs(thresholds))
+    plt.plot(precision[close_zero], recall[close_zero], 'o', markersize=10,
+            label="임계값0", fillstype="none", c='k', mew=2)
+    plt.plot(precision, recall, label="ROC curve")
+    plt.xlabel("Precision")
+    plt.ylabel("Recall")
+    plt.title(alpha)
+    plt.show()
 f.close()
         
 
